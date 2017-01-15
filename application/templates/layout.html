@@ -1,0 +1,14 @@
+<!doctype html>
+<title>horse_api</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+  <h1><a href="{{ url_for('show_top') }}">horse_api</a></h1>
+  <div style="text-align:right;">
+    <a href="{{ url_for('login') }}">login</a>
+    <a href="{{ url_for('logout') }}">logout</a>
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  {% block body %}{% endblock %}
+</div>
