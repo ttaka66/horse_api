@@ -8,7 +8,7 @@ class Owner(db.Model):
     __tablename__ = 'owners'
     id = db.Column(db.Integer, primary_key=True)
     owner_name = db.Column(db.String(20))
-    owners = db.relationship('Horse', backref='owner')
+    horses = db.relationship('Horse', backref='owner')
 
     def __repr__(self):
         return '<Owner id={id} owner_name={owner_name!r}>'.format(
@@ -18,7 +18,7 @@ class Breeder(db.Model):
     __tablename__ = 'breeders'
     id = db.Column(db.Integer, primary_key=True)
     breeder_name = db.Column(db.String(20))
-    breeders = db.relationship('Horse', backref='breeder')
+    horses = db.relationship('Horse', backref='breeder')
 
     def __repr__(self):
         return '<Breeder id={id} breeder_name={breeder_name!r}>'.format(
@@ -27,9 +27,9 @@ class Breeder(db.Model):
 class Trainer(db.Model):
     __tablename__ = 'trainers'
     id = db.Column(db.Integer, primary_key=True)
-    trainer_name = db.Column(db.Text)
-    training_center = db.Column(db.SmallInteger)
-    trainers = db.relationship('Horse', backref='trainer') # {1: 美浦, 2: 栗東}
+    trainer_name = db.Column(db.String(20))
+    training_center = db.Column(db.SmallInteger) # {1: 美浦, 2: 栗東}
+    trainers = db.relationship('Horse', backref='trainer')
 
     def __repr__(self):
         return '<Entry id={id} trainer_name={trainer_name!r}>'.format(
@@ -40,11 +40,11 @@ class Horse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     horse_name = db.Column(db.String(20))
     birth = db.Column(db.Date)
-    sex = db.Column(db.SmallInteger)
+    sex = db.Column(db.SmallInteger) # {0: 牡馬, 1: 牝馬, 2: 栗東, 3: せん馬}
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.id'))
     breeder_id = db.Column(db.Integer, db.ForeignKey('breeders.id'))
     trainer_id = db.Column(db.Integer, db.ForeignKey('trainers.id'))
-    races = db.relationship('Horses_races', backref='horse')
+    horse_races = db.relationship('Horses_races', backref='horse')
 
     def __repr__(self):
         return '<Horse id={id} horse_name={horse_name!r}>'.format(
@@ -97,12 +97,12 @@ class Race(db.Model):
     race_datetime = db.Column(db.DateTime)
     track = db.Column(db.SmallInteger) # {1: 芝, 2: ダート, 3: 障害}
     distance = db.Column(db.SmallInteger)
-    weather = db.Column(db.SmallInteger)
+    weather = db.Column(db.String(10))
     track_condition = db.Column(db.SmallInteger) # {1: 良, 2: 稍重, 3: 重, 4: 不良}
     rule_handicap = db.Column(db.Boolean)
     rule_mare = db.Column(db.Boolean)
     rule_age = db.Column(db.String(50))
-    horses = db.relationship('Horses_races', backref='race')
+    race_horses = db.relationship('Horses_races', backref='race')
 
     def __repr__(self):
         return '<Race id={id} race_name={race_name!r}>'.format(
