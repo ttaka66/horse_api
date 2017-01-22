@@ -7,8 +7,10 @@ from datetime import datetime
 class Owner(db.Model):
     __tablename__ = 'owners'
     id = db.Column(db.Integer, primary_key=True)
-    owner_name = db.Column(db.String(20))
+    owner_name = db.Column(db.String(20), unique=True, nullable=True)
     horses = db.relationship('Horse', backref='owner')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Owner id={id} owner_name={owner_name!r}>'.format(
@@ -17,8 +19,10 @@ class Owner(db.Model):
 class Breeder(db.Model):
     __tablename__ = 'breeders'
     id = db.Column(db.Integer, primary_key=True)
-    breeder_name = db.Column(db.String(20))
+    breeder_name = db.Column(db.String(20), unique=True, nullable=True)
     horses = db.relationship('Horse', backref='breeder')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Breeder id={id} breeder_name={breeder_name!r}>'.format(
@@ -27,9 +31,11 @@ class Breeder(db.Model):
 class Trainer(db.Model):
     __tablename__ = 'trainers'
     id = db.Column(db.Integer, primary_key=True)
-    trainer_name = db.Column(db.String(20))
+    trainer_name = db.Column(db.String(20), unique=True, nullable=True)
     training_center = db.Column(db.SmallInteger) # {1: 美浦, 2: 栗東}
     trainers = db.relationship('Horse', backref='trainer')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Entry id={id} trainer_name={trainer_name!r}>'.format(
@@ -38,13 +44,15 @@ class Trainer(db.Model):
 class Horse(db.Model):
     __tablename__ = 'horses'
     id = db.Column(db.Integer, primary_key=True)
-    horse_name = db.Column(db.String(20))
+    horse_name = db.Column(db.String(20), unique=True, nullable=True)
     birth = db.Column(db.Date)
     sex = db.Column(db.SmallInteger) # {0: 牡馬, 1: 牝馬, 2: 栗東, 3: せん馬}
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.id'))
     breeder_id = db.Column(db.Integer, db.ForeignKey('breeders.id'))
     trainer_id = db.Column(db.Integer, db.ForeignKey('trainers.id'))
     horse_races = db.relationship('Horses_races', backref='horse')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Horse id={id} horse_name={horse_name!r}>'.format(
@@ -53,9 +61,11 @@ class Horse(db.Model):
 class Jockey(db.Model):
     __tablename__ = 'jockeys'
     id = db.Column(db.Integer, primary_key=True)
-    jockey_name = db.Column(db.String(20))
+    jockey_name = db.Column(db.String(20), unique=True, nullable=True)
     training_center = db.Column(db.SmallInteger) # {1: 美浦, 2: 栗東}
     horses_races = db.relationship('Horses_races', backref='jockey')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Jockey id={id} jockey_name={jockey_name!r}>'.format(
@@ -79,6 +89,8 @@ class Horses_races(db.Model):
     last_time = db.Column(db.Interval)
     margin = db.Column(db.String(2))
     prize = db.Column(db.Float)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Horses_races horse_id={horse_id} race_id={race_id}>'.format(
@@ -86,6 +98,7 @@ class Horses_races(db.Model):
 
 class Race(db.Model):
     __tablename__ = 'races'
+    __table_args__ = (db.UniqueConstraint('race_year', 'courses_id', 'courses_count', 'courses_count', 'courses_count_day', name='unique_idx_race'),)
     id = db.Column(db.Integer, primary_key=True)
     race_year = db.Column(db.SmallInteger)
     courses_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
@@ -103,6 +116,8 @@ class Race(db.Model):
     rule_mare = db.Column(db.Boolean)
     rule_age = db.Column(db.String(50))
     race_horses = db.relationship('Horses_races', backref='race')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Race id={id} race_name={race_name!r}>'.format(
@@ -114,6 +129,8 @@ class Course(db.Model):
     course_name = db.Column(db.String(20))
     rotation = db.Column(db.SmallInteger) # {1: 右回り, 2: 左回り}
     races = db.relationship('Race', backref='course')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Course id={id} course_name={course_name!r}>'.format(
