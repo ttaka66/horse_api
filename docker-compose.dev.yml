@@ -1,0 +1,17 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:9.5.4
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+  app:
+    build: .
+    command: python manage.py runserver --host 0.0.0.0 --debug --reload
+    volumes:
+      - .:/usr/src/railsapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+volumes:
+  pgsql-data:
