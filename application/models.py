@@ -1,6 +1,7 @@
 from application import db
 from sqlalchemy.dialects.postgresql import JSON
 from datetime import datetime
+from enum import Enum
 
 #! インサート(アップデート)日時追加予定
 
@@ -28,12 +29,17 @@ class Breeder(db.Model):
         return '<Breeder id={id} breeder_name={breeder_name!r}>'.format(
                 id=self.id, breeder_name=self.breeder_name)
 
+# class TrainingCenter(Enum):
+#     miho = 1
+#     rittou = 2
+
 class Trainer(db.Model):
     __tablename__ = 'trainers'
     id = db.Column(db.Integer, primary_key=True)
     trainer_name = db.Column(db.String(20), unique=True, nullable=True)
     training_center = db.Column(db.SmallInteger) # {1: 美浦, 2: 栗東}
-    trainers = db.relationship('Horse', backref='trainer')
+    # training_center = db.Column(db.Enum(TrainingCenter)) # {1: 美浦, 2: 栗東}
+    horses = db.relationship('Horse', backref='trainer')
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
 
