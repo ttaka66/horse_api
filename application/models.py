@@ -104,7 +104,7 @@ class Horses_races(db.Model):
 
 class Race(db.Model):
     __tablename__ = 'races'
-    __table_args__ = (db.UniqueConstraint('race_year', 'courses_id', 'courses_count', 'courses_count', 'courses_count_day', name='unique_idx_race'),)
+    __table_args__ = (db.UniqueConstraint('race_year', 'courses_id', 'courses_count', 'courses_count_day', name='unique_idx_race'),)
     id = db.Column(db.Integer, primary_key=True)
     race_year = db.Column(db.SmallInteger)
     courses_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
@@ -141,6 +141,64 @@ class Course(db.Model):
     def __repr__(self):
         return '<Course id={id} course_name={course_name!r}>'.format(
                 id=self.id, course_name=self.course_name)
+
+def initCourse():
+    course_datas = [
+        {
+            'id': 1,
+            'course_name': '札幌',
+            'rotation': 1
+        },
+        {
+            'id': 2,
+            'course_name': '函館',
+            'rotation': 1
+        },
+        {
+            'id': 3,
+            'course_name': '福島',
+            'rotation': 1
+        },
+        {
+            'id': 4,
+            'course_name': '新潟',
+            'rotation': 2
+        },
+        {
+            'id': 5,
+            'course_name': '東京',
+            'rotation': 2
+        },
+        {
+            'id': 6,
+            'course_name': '中山',
+            'rotation': 1
+        },
+        {
+            'id': 7,
+            'course_name': '中京',
+            'rotation': 2
+        },
+        {
+            'id': 8,
+            'course_name': '京都',
+            'rotation': 1
+        },
+        {
+            'id': 9,
+            'course_name': '阪神',
+            'rotation': 1
+        },
+        {
+            'id': 10,
+            'course_name': '小倉',
+            'rotation': 1
+        },
+    ]
+    for course_data in course_datas:
+        course = Course(**course_data)
+        db.session.add(course)
+    db.session.commit()
 
 def init():
     db.create_all()

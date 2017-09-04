@@ -6,7 +6,9 @@ manager = Manager(app)
 
 @manager.command
 def init_db():
+    from application.models import initCourse
     db.create_all()
+    initCourse()
 
 @manager.command
 def drop_db():
