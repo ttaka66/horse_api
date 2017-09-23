@@ -17,6 +17,18 @@ class Owner(db.Model):
         return '<Owner id={id} owner_name={owner_name!r}>'.format(
                 id=self.id, owner_name=self.owner_name)
 
+class Producer(db.Model):
+    __tablename__ = 'producer'
+    id = db.Column(db.Integer, primary_key=True)
+    producer_name = db.Column(db.String(20), unique=True, nullable=True)
+    horses = db.relationship('Horse', backref='producer')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+
+    def __repr__(self):
+        return '<Producer id={id} producer_name={owner_name!r}>'.format(
+                id=self.id, producer_name=self.producer_name)
+
 class Breeder(db.Model):
     __tablename__ = 'breeders'
     id = db.Column(db.Integer, primary_key=True)
@@ -112,7 +124,7 @@ class Race(db.Model):
     courses_count_day = db.Column(db.SmallInteger)
     day_race_number = db.Column(db.SmallInteger)
     race_name = db.Column(db.String(50))
-    race_rank = db.Column(db.SmallInteger) # {1: G1, 2: G2, 3: G3, 4: open, 5: 1600万下, 6: 1000万下, 7: 500万下, 8: 未勝利 , 9: 新馬}
+    race_rank = db.Column(db.SmallInteger) # {1: G1, 2: G2, 3: G3, 4: open, 5: 1600万下, 6: 1000万下, 7: 500万下, 8: 未勝利 , 9: 新馬, 10 未出走}
     race_datetime = db.Column(db.DateTime)
     track = db.Column(db.SmallInteger) # {1: 芝, 2: ダート, 3: 障害}
     distance = db.Column(db.SmallInteger)
@@ -120,7 +132,7 @@ class Race(db.Model):
     track_condition = db.Column(db.SmallInteger) # {1: 良, 2: 稍重, 3: 重, 4: 不良}
     rule_handicap = db.Column(db.Boolean)
     rule_mare = db.Column(db.Boolean)
-    rule_age = db.Column(db.String(50))
+    rule_age = db.Column(db.SmallInteger) # {1: 2歳, 2: 3歳, 3: 3歳上, 4: 4歳上}
     race_horses = db.relationship('Horses_races', backref='race')
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
