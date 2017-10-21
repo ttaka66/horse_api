@@ -18,7 +18,7 @@ class Owner(db.Model):
                 id=self.id, owner_name=self.owner_name)
 
 class Producer(db.Model):
-    __tablename__ = 'producer'
+    __tablename__ = 'producers'
     id = db.Column(db.Integer, primary_key=True)
     producer_name = db.Column(db.String(20), unique=True, nullable=True)
     horses = db.relationship('Horse', backref='producer')
@@ -64,8 +64,10 @@ class Horse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     horse_name = db.Column(db.String(20), unique=True, nullable=True)
     birth = db.Column(db.Date)
-    sex = db.Column(db.SmallInteger) # {0: 牡馬, 1: 牝馬, 2: 栗東, 3: せん馬}
+    sex = db.Column(db.SmallInteger) # {1: 牡馬, 2: 牝馬, 3: せん馬}
+    color = db.Column(db.String(5))
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.id'))
+    producer_id = db.Column(db.Integer, db.ForeignKey('producers.id'))
     breeder_id = db.Column(db.Integer, db.ForeignKey('breeders.id'))
     trainer_id = db.Column(db.Integer, db.ForeignKey('trainers.id'))
     horse_races = db.relationship('Horses_races', backref='horse')
