@@ -9,15 +9,16 @@ services:
       - POSTGRES_DB=horse_api
     volumes:
       - pgsql-data:/var/lib/postgresql/data/pgdata
-  app:
-    build: .
-    dockerfile: Dockerfile.dev
-    command: python manage.py runserver --host 0.0.0.0 --debug --reload
-    volumes:
-      - .:/usr/src/horse_api
+  web:
+    build:
+      context: ./docker/nginx/
     ports:
-      - "5000:5000"
+      - "8080:80"
     depends_on:
       - postgres
+      - app
+  app:
+    build:
+      context: .
 volumes:
   pgsql-data:
