@@ -10,8 +10,10 @@ services:
     volumes:
       - pgsql-data:/var/lib/postgresql/data/pgdata
   app:
-    build: .
-    dockerfile: Dockerfile.dev
+
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     command: python manage.py runserver --host 0.0.0.0 --debug --reload
     volumes:
       - .:/usr/src/horse_api
