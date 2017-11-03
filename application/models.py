@@ -55,7 +55,6 @@ class Horse(db.Model):
     sex = db.Column(db.SmallInteger) # {1: 牡馬, 2: 牝馬, 3: せん馬}
     color = db.Column(db.String(5))
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.id'))
-    producer_id = db.Column(db.Integer, db.ForeignKey('producers.id'))
     breeder_id = db.Column(db.Integer, db.ForeignKey('breeders.id'))
     trainer_id = db.Column(db.Integer, db.ForeignKey('trainers.id'))
     horse_races = db.relationship('Horses_races', backref='horse')
