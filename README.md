@@ -52,7 +52,7 @@ $ docker-compose -f docker-compose.dev.yml exec app python manage.py init_db
 
 テーブルの削除
 
-```bash:
+```
 $ docker-compose -f docker-compose.dev.yml exec app python manage.py drop_db
 ```
 
@@ -68,7 +68,6 @@ pythonコンソール
 
 ```
 $ docker-compose -f docker-compose.dev.yml exec app python
-
 ```
 
 ## Contribution
