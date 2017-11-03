@@ -17,18 +17,6 @@ class Owner(db.Model):
         return '<Owner id={id} owner_name={owner_name!r}>'.format(
                 id=self.id, owner_name=self.owner_name)
 
-class Producer(db.Model):
-    __tablename__ = 'producers'
-    id = db.Column(db.Integer, primary_key=True)
-    producer_name = db.Column(db.String(20), unique=True, nullable=True)
-    horses = db.relationship('Horse', backref='producer')
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
-
-    def __repr__(self):
-        return '<Producer id={id} producer_name={owner_name!r}>'.format(
-                id=self.id, producer_name=self.producer_name)
-
 class Breeder(db.Model):
     __tablename__ = 'breeders'
     id = db.Column(db.Integer, primary_key=True)
