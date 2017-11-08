@@ -8,7 +8,7 @@ from enum import Enum
 class Owner(db.Model):
     __tablename__ = 'owners'
     id = db.Column(db.Integer, primary_key=True)
-    owner_name = db.Column(db.String(20), unique=True, nullable=True)
+    owner_name = db.Column(db.String(50), unique=True, nullable=True)
     horses = db.relationship('Horse', backref='owner')
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
@@ -20,7 +20,7 @@ class Owner(db.Model):
 class Breeder(db.Model):
     __tablename__ = 'breeders'
     id = db.Column(db.Integer, primary_key=True)
-    breeder_name = db.Column(db.String(20), unique=True, nullable=True)
+    breeder_name = db.Column(db.String(100), unique=True, nullable=True)
     horses = db.relationship('Horse', backref='breeder')
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
@@ -38,13 +38,13 @@ class Trainer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     trainer_name = db.Column(db.String(20), unique=True, nullable=True)
     training_center = db.Column(db.SmallInteger) # {1: 美浦, 2: 栗東}
-    # training_center = db.Column(db.Enum(TrainingCenter)) # {1: 美浦, 2: 栗東}
+    # training_center = db.Column(db.Enum(TrainingCenter)) # {1: 美浦, 2: 栗東, 3: 地方}
     horses = db.relationship('Horse', backref='trainer')
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
-        return '<Entry id={id} trainer_name={trainer_name!r}>'.format(
+        return '<Trainer id={id} trainer_name={trainer_name!r}>'.format(
                 id=self.id, trainer_name=self.trainer_name)
 
 class Horse(db.Model):
@@ -87,14 +87,14 @@ class Horses_races(db.Model):
     frame = db.Column(db.SmallInteger)
     number = db.Column(db.SmallInteger)
     body_weight = db.Column(db.SmallInteger)
-    weight = db.Column(db.SmallInteger)
-    order = db.Column(db.SmallInteger)
+    weight = db.Column(db.Float)
+    order = db.Column(db.SmallInteger)  # {0: 未出走, 他: 着順}
     favorite = db.Column(db.SmallInteger)
     odds = db.Column(db.Float)
     position = db.Column(JSON)
     finish_time = db.Column(db.Interval)
     last_time = db.Column(db.Interval)
-    margin = db.Column(db.String(2))
+    margin = db.Column(db.String(5))
     prize = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
@@ -105,7 +105,7 @@ class Horses_races(db.Model):
 
 class Race(db.Model):
     __tablename__ = 'races'
-    __table_args__ = (db.UniqueConstraint('race_year', 'courses_id', 'courses_count', 'courses_count_day', name='unique_idx_race'),)
+    __table_args__ = (db.UniqueConstraint('race_year', 'courses_id', 'courses_count', 'courses_count_day', 'day_race_number', name='unique_idx_race'),)
     id = db.Column(db.Integer, primary_key=True)
     race_year = db.Column(db.SmallInteger)
     courses_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
