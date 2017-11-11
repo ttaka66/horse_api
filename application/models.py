@@ -94,7 +94,7 @@ class Horses_races(db.Model):
     position = db.Column(JSON)
     finish_time = db.Column(db.Interval)
     last_time = db.Column(db.Interval)
-    margin = db.Column(db.String(5))
+    margin = db.Column(db.String(10))
     prize = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
