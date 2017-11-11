@@ -50,6 +50,11 @@ http://localhost:5000/
 $ docker-compose -f docker-compose.dev.yml exec app python manage.py init_db
 ```
 
+初期データ挿入
+```
+$ cat data/{ファイル名} | docker exec -i horseapi_postgres_1 psql -U postgres
+```
+
 テーブルの削除
 
 ```
