@@ -70,6 +70,20 @@ pythonコンソール
 $ docker-compose -f docker-compose.dev.yml exec app python
 ```
 
+### バージョンアップ
+
+- PostgreSQL
+
+```
+# docker/postgresql/Dockerfile
+FROM postgres:{バージョン}
+```
+
+```
+$ docker volume rm horseapi_pgsql-data
+$ docker-compose -f docker-compose.dev.yml build
+```
+
 ## Contribution
 
 ## Licence
